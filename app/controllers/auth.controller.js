@@ -11,9 +11,17 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
-    username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    phone_number: req.body.phone_number,
+    address_line1: req.body.address_line1,
+    address_line2: req.body.address_line2,
+    city: req.body.city,
+    state_province: req.body.state_province,
+    country: req.body.country,
+    postcode: req.body.postcode,
   })
     .then((user) => {
       if (req.body.roles) {
@@ -25,13 +33,13 @@ exports.signup = (req, res) => {
           },
         }).then((roles) => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ message: "User registered successfully!" });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
+          res.send({ message: "User registered successfully!" });
         });
       }
     })
@@ -43,7 +51,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username,
+      email: req.body.email,
     },
   })
     .then((user) => {
@@ -76,7 +84,7 @@ exports.signin = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
-          username: user.username,
+          //username: user.username,
           email: user.email,
           roles: authorities,
           accessToken: token,
@@ -86,4 +94,33 @@ exports.signin = (req, res) => {
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.profile = async (req, res) => {
+  // User.findOne({
+  //   where: {
+  //     email: req.body.email,
+  //   },
+  // })
+  //   .then(
+  //     res.status(200).send({
+  //       first_name: user.first_name,
+  //       last_name: user.last_name,
+  //       email: user.email,
+  //       phone_number: user.phone_number,
+  //       address: user.address_line1,
+  //       postcode: user.postcode,
+  //     })
+  //   )
+  //   .catch((error) => {
+  //     res.status(500).send({ message: err.message });
+  //   });
+
+  try {
+    const users = await db.user.findAll();
+    res.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send("Error fetching users");
+  }
 };

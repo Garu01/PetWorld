@@ -1,6 +1,6 @@
 const { verifySignUp } = require("../middleware");
+const pet = require("../controllers/pet.controller");
 const controller = require("../controllers/auth.controller");
-
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
@@ -20,4 +20,12 @@ module.exports = function (app) {
   );
 
   app.post("/api/auth/signin", controller.signin);
+
+  // app.get("/api/auth/userinfo", controller.profile);
+
+  app.post("/api/pets", pet.upload_pet);
+
+  app.get("/users", controller.profile);
+
+  app.get("/api/showPet", pet.showUserPet);
 };

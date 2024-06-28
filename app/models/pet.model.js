@@ -1,3 +1,5 @@
+const { DataTypes } = require("sequelize");
+
 module.exports = (sequelize, Sequelize) => {
   const Pet = sequelize.define("pets", {
     user_id: {
@@ -37,19 +39,19 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     image: {
-      type: Sequelize.BLOB,
+      type: Sequelize.BLOB("long"),
     },
     microchiped: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     },
     vaccinated: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     },
     wormed_flead: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     },
     health_checked: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     },
     seller_name: {
       type: Sequelize.STRING,

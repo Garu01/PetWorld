@@ -1,0 +1,38 @@
+{
+  "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.3",
+    "firebase": "^10.12.2",
+    "handlebars": "^4.7.8",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "node-sass": "^9.0.0",
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.3"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "node-sass --watch app/resources/scss/app.scss app/public/css/app.css"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "express",
+    "jwt",
+    "authentication",
+    "postgresql"
+  ],
+  "author": "garu01",
+  "license": "ISC",
+  "description": ""
+}

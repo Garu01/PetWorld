@@ -3,12 +3,11 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
 const Pet = db.pet;
-const Op = db.Sequelize.Op;
 
-exports.upload_pet = (req, res) => {
+exports.upload_pet = async (req, res) => {
   const base64Image = req.body.image;
   const byteaData = Buffer.from(base64Image, "base64");
-  Pet.create({
+  await Pet.create({
     user_id: req.body.user_id,
     pet_type: req.body.pet_type,
     pet_breed: req.body.pet_breed,
@@ -26,7 +25,8 @@ exports.upload_pet = (req, res) => {
     vaccinated: req.body.vaccinated,
     wormed_flead: req.body.wormed_flead,
     health_checked: req.body.health_checked,
-    seller_name: req.body.seller_name,
+    admin_check: req.body.admin_check,
+    available: req.body.available,
   })
     .then(() => {
       res.status(200).send({ message: "Pet uploaded successfully" });
@@ -48,7 +48,13 @@ exports.showUserPet = async (req, res) => {
     //   })
     //   //.then(res.json(pets));
     //   .then(res.render("hone", { pets }));
-    const pets = await db.pet.findAll();
+    const pets = await db.pet.findAll({
+      include: {
+        model: User,
+        attributes: ["first_name"],
+        required: false, // Allow pets without associated users
+      },
+    });
 
     // const petsWithBase64Images = pets.map((pet) => ({
     //   const base64Image = pet.image ? pet.image.toString("base64") : null;
@@ -61,13 +67,56 @@ exports.showUserPet = async (req, res) => {
       id: record.id,
       type: record.pet_type,
       title: record.pet_title,
+      breed: record.pet_breed,
       base64String: record.image ? record.image.toString("base64") : null,
       user_id: record.user_id,
+      price: record.price,
+      color: record.pet_color,
+      date_of_birth: record.date_of_birth,
+      first_name: record.user.first_name,
+      admin_checked: record.admin_check,
       // Map other fields as necessary
     }));
     res.json(responseData);
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).send("Error fetching users");
+  }
+};
+
+exports.adminChecked = async (req, res) => {
+  const { availableCheck } = req.body;
+
+  try {
+    for (const item of availableCheck) {
+      await Pet.update(
+        { admin_check: item.available },
+        { where: { id: item.id } }
+      );
+    }
+    res
+      .status(200)
+      .json({ message: "Availability updated and items removed successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating availability: " + error.message });
+  }
+};
+
+exports.adminRemoved = async (req, res) => {
+  const { removeCheck } = req.body;
+
+  try {
+    for (const item of removeCheck) {
+      await Pet.destroy({ where: { id: item.id } });
+    }
+    res
+      .status(200)
+      .json({ message: "Availability updated and items removed successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating availability: " + error.message });
   }
 };

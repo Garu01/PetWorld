@@ -1,9 +1,16 @@
-const { DataTypes } = require("sequelize");
-
 module.exports = (sequelize, Sequelize) => {
   const Pet = sequelize.define("pets", {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     user_id: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "users",
+        key: "id",
+      },
     },
     pet_type: {
       type: Sequelize.STRING,
@@ -53,12 +60,12 @@ module.exports = (sequelize, Sequelize) => {
     health_checked: {
       type: Sequelize.STRING,
     },
-    seller_name: {
+    admin_check: {
       type: Sequelize.STRING,
     },
-    // available: {
-    //   type: Sequelize.BOOLEAN,
-    // },
+    available: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Pet;

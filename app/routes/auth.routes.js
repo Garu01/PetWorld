@@ -23,9 +23,5 @@ module.exports = function (app) {
 
   // app.get("/api/auth/userinfo", controller.profile);
 
-  app.post("/api/pets", pet.upload_pet);
-
   app.get("/users", controller.profile);
-
-  app.get("/api/showPet", pet.showUserPet);
 };

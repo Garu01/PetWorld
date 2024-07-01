@@ -153,12 +153,8 @@ exports.updateInfo = async (req, res) => {
         where: { id: req.body.user_id },
       }
     );
-    res
-      .status(200)
-      .json({ message: "Availability updated and items removed successfully" });
+    res.status(200).json({ message: "Updated successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating availability: " + error.message });
+    res.status(500).json({ message: "Error updating : " + error.message });
   }
 };

@@ -73,6 +73,7 @@ exports.showUserPet = async (req, res) => {
       date_of_birth: record.date_of_birth,
       first_name: record.user.first_name,
       admin_checked: record.admin_check,
+      available: record.available,
       // Map other fields as necessary
     }));
     res.json(responseData);
@@ -89,18 +90,13 @@ exports.adminCheck = async (req, res) => {
 
   try {
     for (const item of availableCheck) {
-      await Pet.update(
-        { admin_check: item.available },
-        { where: { id: item.id } }
-      );
+      await Pet.update({ admin_check: "true" }, { where: { id: item.id } });
     }
-    res
-      .status(200)
-      .json({ message: "Availability updated and items removed successfully" });
+    res.status(200).json({ message: "Admin Check updated successfully" });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error updating availability: " + error.message });
+      .json({ message: "Error updating admin Check : " + error.message });
   }
 };
 
@@ -116,7 +112,7 @@ exports.removePet = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error updating availability: " + error.message });
+      .json({ message: "Error updating remove : " + error.message });
   }
 };
 

@@ -60,6 +60,7 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/pet.routes")(app);
 require("./app/routes/transaction.routes")(app);
+
 // require("./app/routes/transaction.routes")(app);
 // const user = auth.currentUser;
 // async function uploadImage(file, quantity) {

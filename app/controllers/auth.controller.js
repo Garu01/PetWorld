@@ -8,8 +8,10 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// function for sign up
 exports.signup = (req, res) => {
   // Save User to Database
+  // mấy cái sau create có thể hiểu là nếu tạo trên web thì auto là user role
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
@@ -48,7 +50,9 @@ exports.signup = (req, res) => {
     });
 };
 
+// function for signin
 exports.signin = (req, res) => {
+  // find email in database if no -> response error
   User.findOne({
     where: {
       email: req.body.email,
@@ -59,6 +63,7 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: "User Not found." });
       }
 
+      // decrypt password stored in database and compare password , if wrong -> response error
       var passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password
@@ -71,6 +76,7 @@ exports.signin = (req, res) => {
         });
       }
 
+      // if email , password correct, create jwt for authentication
       const token = jwt.sign({ id: user.id }, config.secret, {
         algorithm: "HS256",
         allowInsecureKeySizes: true,
@@ -96,6 +102,7 @@ exports.signin = (req, res) => {
     });
 };
 
+// upload all users information
 exports.profile = async (req, res) => {
   // User.findOne({
   //   where: {
@@ -125,8 +132,10 @@ exports.profile = async (req, res) => {
   }
 };
 
+// update user info
 exports.updateInfo = async (req, res) => {
   try {
+    // find in database if  request user_id = user_id in database -> update
     User.update(
       {
         email: req.body.email,

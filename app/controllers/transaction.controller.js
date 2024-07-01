@@ -6,6 +6,7 @@ const Role = db.role;
 const Pet = db.pet;
 const Transaction = db.transaction;
 
+// create transaction when receive from client
 exports.createTransaction = async (req, res) => {
   Transaction.create({
     user_id: req.body.user_id,

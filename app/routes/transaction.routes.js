@@ -1,3 +1,4 @@
+// xen function controller o folder trong require
 const transaction = require("../controllers/transaction.controller");
 module.exports = function (app) {
   app.use(function (req, res, next) {

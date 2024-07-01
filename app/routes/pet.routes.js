@@ -1,3 +1,4 @@
+// xen function controller o folder trong require
 const pet = require("../controllers/pet.controller");
 module.exports = function (app) {
   app.use(function (req, res, next) {

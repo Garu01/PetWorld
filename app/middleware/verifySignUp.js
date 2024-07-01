@@ -5,6 +5,7 @@ const User = db.user;
 checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
   // Email
+  // find in database that has existed email or not. if have response error
   User.findOne({
     where: {
       email: req.body.email,

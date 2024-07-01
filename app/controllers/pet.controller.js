@@ -4,7 +4,9 @@ const User = db.user;
 const Role = db.role;
 const Pet = db.pet;
 
+// function for upload pet to database
 exports.uploadPet = async (req, res) => {
+  // image data received in client is base64 -> convert to base64 then stored in database
   const base64Image = req.body.image;
   const byteaData = Buffer.from(base64Image, "base64");
   await Pet.create({
@@ -38,6 +40,7 @@ exports.uploadPet = async (req, res) => {
     });
 };
 
+// upload pet information. this function only show some column that use for show in UI
 exports.showUserPet = async (req, res) => {
   try {
     // const pets = await db.pet
@@ -48,6 +51,8 @@ exports.showUserPet = async (req, res) => {
     //   })
     //   //.then(res.json(pets));
     //   .then(res.render("hone", { pets }));
+
+    // up load all pet data and first_name of user in user table
     const pets = await db.pet.findAll({
       include: {
         model: User,
@@ -55,13 +60,6 @@ exports.showUserPet = async (req, res) => {
         required: false, // Allow pets without associated users
       },
     });
-
-    // const petsWithBase64Images = pets.map((pet) => ({
-    //   const base64Image = pet.image ? pet.image.toString("base64") : null;
-    //   return { ...pet.toJSON(), image: base64Image };
-    // });
-    //res.json(petsWithBase64Images);
-    //res.status(404).send("Pet not found");
 
     const responseData = pets.map((record) => ({
       id: record.id,
@@ -84,6 +82,8 @@ exports.showUserPet = async (req, res) => {
   }
 };
 
+// trong pets data có column admin_check dùng để check xem thông tin pet đó ok không, nếu ok thì sẽ được
+// show lên trang web cho mọi người xem
 exports.adminCheck = async (req, res) => {
   const { availableCheck } = req.body;
 
@@ -104,6 +104,7 @@ exports.adminCheck = async (req, res) => {
   }
 };
 
+// function for removed pet
 exports.removePet = async (req, res) => {
   const { removeCheck } = req.body;
 
@@ -119,6 +120,7 @@ exports.removePet = async (req, res) => {
   }
 };
 
+// function for show all pet info. This function show all pet column for user edit their pet info
 exports.uploadUserPetDetail = async (req, res) => {
   try {
     const pets = await db.pet.findAll();
@@ -139,6 +141,7 @@ exports.uploadUserPetDetail = async (req, res) => {
   }
 };
 
+// update pet info
 exports.updatePet = async (req, res) => {
   const base64Image = req.body.image;
   const byteaData = Buffer.from(base64Image, "base64");

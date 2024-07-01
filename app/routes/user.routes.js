@@ -1,6 +1,6 @@
 const { authJwt } = require("../middleware");
+// xen function controller o folder trong require
 const controller = require("../controllers/user.controller");
-
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(

@@ -4,7 +4,7 @@ const User = db.user;
 const Role = db.role;
 const Pet = db.pet;
 
-exports.upload_pet = async (req, res) => {
+exports.uploadPet = async (req, res) => {
   const base64Image = req.body.image;
   const byteaData = Buffer.from(base64Image, "base64");
   await Pet.create({
@@ -84,7 +84,7 @@ exports.showUserPet = async (req, res) => {
   }
 };
 
-exports.adminChecked = async (req, res) => {
+exports.adminCheck = async (req, res) => {
   const { availableCheck } = req.body;
 
   try {
@@ -104,19 +104,70 @@ exports.adminChecked = async (req, res) => {
   }
 };
 
-exports.adminRemoved = async (req, res) => {
+exports.removePet = async (req, res) => {
   const { removeCheck } = req.body;
 
   try {
     for (const item of removeCheck) {
       await Pet.destroy({ where: { id: item.id } });
     }
-    res
-      .status(200)
-      .json({ message: "Availability updated and items removed successfully" });
+    res.status(200).json({ message: "Items removed successfully" });
   } catch (error) {
     res
       .status(500)
       .json({ message: "Error updating availability: " + error.message });
+  }
+};
+
+exports.uploadUserPetDetail = async (req, res) => {
+  try {
+    const pets = await db.pet.findAll();
+
+    const modifiedPets = pets.map((record) => {
+      if (record.image) {
+        record.image = record.image.toString("base64");
+      } else {
+        record.image = null;
+      }
+      return record;
+    });
+    res.json(modifiedPets);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating availability: " + error.message });
+  }
+};
+
+exports.updatePet = async (req, res) => {
+  const base64Image = req.body.image;
+  const byteaData = Buffer.from(base64Image, "base64");
+  try {
+    Pet.update(
+      {
+        pet_type: req.body.pet_type,
+        pet_breed: req.body.pet_breed,
+        pet_title: req.body.pet_title,
+        pet_color: req.body.pet_color,
+        location: req.body.location,
+        price: req.body.price,
+        advertisement_type: req.body.advertisement_type,
+        contact_preference: req.body.contact_preference,
+        date_of_birth: req.body.date_of_birth,
+        weight: req.body.weight,
+        sex: req.body.sex,
+        image: byteaData,
+        microchiped: req.body.microchiped,
+        vaccinated: req.body.vaccinated,
+        wormed_flead: req.body.wormed_flead,
+        health_checked: req.body.health_checked,
+        admin_check: req.body.admin_check,
+      },
+      { where: { id: req.body.id } }
+    );
+
+    res.status(200).send({ message: "Update successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "update failed" });
   }
 };

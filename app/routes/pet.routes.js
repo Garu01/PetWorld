@@ -10,9 +10,15 @@ module.exports = function (app) {
 
   app.get("/api/showPet", pet.showUserPet);
 
-  app.post("/api/pets", pet.upload_pet);
+  app.post("/api/pets", pet.uploadPet);
 
-  app.post("/api/adminRemove", pet.adminRemoved);
+  app.post("/api/adminRemove", pet.removePet);
 
-  app.post("/api/adminCheck", pet.adminChecked);
+  app.post("/api/adminCheck", pet.adminCheck);
+
+  app.get("/api/showUserPet", pet.uploadUserPetDetail);
+
+  app.post("/api/updateUserPet", pet.updatePet);
+
+  app.post("/api/userRemove", pet.removePet);
 };

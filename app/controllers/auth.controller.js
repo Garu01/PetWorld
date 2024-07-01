@@ -124,3 +124,32 @@ exports.profile = async (req, res) => {
     res.status(500).send("Error fetching users");
   }
 };
+
+exports.updateInfo = async (req, res) => {
+  try {
+    User.update(
+      {
+        email: req.body.email,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        phone_number: req.body.phone_number,
+        address_line1: req.body.address_line1,
+        address_line2: req.body.address_line2,
+        city: req.body.city,
+        state_province: req.body.state_province,
+        country: req.body.country,
+        postcode: req.body.postcode,
+      },
+      {
+        where: { id: req.body.user_id },
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Availability updated and items removed successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating availability: " + error.message });
+  }
+};

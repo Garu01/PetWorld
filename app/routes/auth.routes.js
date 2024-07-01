@@ -24,4 +24,6 @@ module.exports = function (app) {
   // app.get("/api/auth/userinfo", controller.profile);
 
   app.get("/users", controller.profile);
+
+  app.post("/api/updateUserInfo", controller.updateInfo);
 };

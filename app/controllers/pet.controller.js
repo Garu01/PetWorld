@@ -74,6 +74,12 @@ exports.showUserPet = async (req, res) => {
       first_name: record.user.first_name,
       admin_checked: record.admin_check,
       available: record.available,
+      microchiped: record.microchiped,
+      vaccinated: record.vaccinated,
+      wormed_flead: record.wormed_flead,
+      health_checked: record.health_checked,
+      advertisement_type: record.advertisement_type,
+      contact_preference: record.contact_preference,
       // Map other fields as necessary
     }));
     res.json(responseData);

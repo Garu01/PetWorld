@@ -8,15 +8,15 @@ const Transaction = db.transaction;
 
 // create transaction when receive from client
 exports.createTransaction = async (req, res) => {
-  const { extractedData } = req.body;
+  const { extractedData, totalPrice } = req.body;
   console.log(extractedData);
   try {
     for (const item of extractedData) {
       Transaction.create({
         user_id: item.user_id,
         pet_id: item.id,
-        quantity: item.aty,
-        // total_price: item.total_price,
+        quantity: item.qty,
+        total_price: totalPrice,
       });
       Pet.update({ available: "false" }, { where: { id: item.id } });
     }
